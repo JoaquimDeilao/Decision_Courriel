@@ -109,6 +109,14 @@
   <script>
     // Définition de l'arbre de décision
     const tree = {
+      start: {
+        question: "Avez-vous vraiment besoin d'envoyer un mail ?",
+        icon: "question.png",
+        responses: [
+          { text: "Je pense que oui", next: "response1" },
+          { text: "Explorons d'autres pistes", next: "response2" },
+        ],
+      },
       response1: {
         question: "Votre courriel nécessite-t-il une réponse rapide ?",
         icon: "urgent.png",
@@ -184,11 +192,13 @@
       },
     };
 
-    // Fonction pour gérer la navigation dans l'arbre
+    // Fonction pour changer la question
     function nextStep(stepName) {
       const step = tree[stepName];
-      const questionBox = document.getElementById("decision-tree");
-      const responseButtons = document.getElementById("response-buttons");
+      if (!step) {
+        console.error("Étape introuvable :", stepName);
+        return;
+      }
 
       // Mise à jour de la question
       document.getElementById("question-text").innerHTML = `
@@ -197,8 +207,9 @@
       `;
 
       // Mise à jour des réponses
+      const responseButtons = document.getElementById("response-buttons");
       responseButtons.innerHTML = "";
-      if (step.responses.length > 0) {
+      if (step.responses && step.responses.length > 0) {
         step.responses.forEach((response) => {
           const button = document.createElement("button");
           button.className = "response";
@@ -211,10 +222,13 @@
       }
     }
 
-    // Réinitialiser l'arbre
+    // Réinitialisation de l'arbre
     function reset() {
-      location.reload();
+      nextStep("start");
     }
+
+    // Initialisation
+    nextStep("start");
   </script>
 </body>
 </html>

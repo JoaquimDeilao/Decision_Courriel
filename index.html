@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arbre de Décision - Journée sans Mail</title>
+  <title>Arbre de Décision - Mail</title>
   <style>
-    /* Styling général */
     body {
       font-family: Calibri, sans-serif;
       background-color: #ffcd00;
@@ -77,7 +76,6 @@
       height: auto;
     }
 
-    /* Responsive adjustments */
     @media (max-width: 768px) {
       .responses {
         flex-direction: column;
@@ -90,18 +88,17 @@
   </style>
 </head>
 <body>
-  <!-- Question Box -->
   <div id="decision-tree" class="question-box">
     <p id="question-text" class="question">
       <img src="question.png" alt="Icône question">
-      Avez-vous vraiment besoin d’envoyer un email ?
+      Avez-vous vraiment besoin d'envoyer un mail ?
     </p>
     <div id="response-buttons" class="responses">
       <button class="response" onclick="nextStep('response1')">
         Je pense que oui
       </button>
       <button class="response" onclick="nextStep('response2')">
-        Explorons d’autres options
+        Explorons d'autres pistes
       </button>
     </div>
     <div class="logo-box">
@@ -110,22 +107,21 @@
   </div>
 
   <script>
-    // Arbre de décision
     const tree = {
       response1: {
-        question: "Votre message nécessite-t-il une réponse rapide ?",
+        question: "Votre courriel nécessite-t-il une réponse rapide ?",
         icon: "urgent.png",
         responses: [
-          { text: "Oui, réponse rapide souhaitée", next: "immediate-action" },
-          { text: "Non, pas de réponse immédiate attendue", next: "trace" },
+          { text: "Oui", next: "immediate-action" },
+          { text: "Non", next: "trace" },
         ],
       },
       response2: {
-        question: "Votre message est-il urgent ou peut-il attendre un peu ?",
+        question: "Votre message est-il urgent ?",
         icon: "time.png",
         responses: [
-          { text: "C’est urgent", next: "immediate-action" },
-          { text: "Ça peut attendre", next: "clarify" },
+          { text: "Oui", next: "immediate-action" },
+          { text: "Non", next: "clarify" },
         ],
       },
       immediate-action: {
@@ -134,20 +130,20 @@
         responses: [],
       },
       trace: {
-        question: "Est-ce important de garder une trace écrite de cet échange ?",
+        question: "Est-ce important de conserver une trace écrite de cet échange ?",
         icon: "archive.png",
         responses: [
-          { text: "Oui, besoin de traçabilité", next: "email-solution" },
-          { text: "Non, pas besoin de trace", next: "audience" },
+          { text: "Oui", next: "email-solution" },
+          { text: "Non", next: "audience" },
         ],
       },
       email-solution: {
-        question: "Envoyez un email pour garder une trace.",
+        question: "L'envoi d'un courriel semble approprié.",
         icon: "email.png",
         responses: [],
       },
       audience: {
-        question: "Ce message concerne-t-il plusieurs personnes ou juste une seule ?",
+        question: "Quelle est l'audience de ce message ?",
         icon: "group.png",
         responses: [
           { text: "Plusieurs personnes", next: "teams-group" },
@@ -155,51 +151,45 @@
         ],
       },
       teams-group: {
-        question: "Organisez une visio Teams ou envoyez un message de groupe sur Teams.",
+        question: "Une visio-conférence ou un message sur un groupe Teams est suffisant.",
         icon: "video.png",
         responses: [],
       },
       instant-message: {
-        question: "Un message instantané Teams suffit.",
+        question: "Un appel ou l'utilisation de la messagerie instantanée Teams semble suffisant.",
         icon: "chat.png",
         responses: [],
       },
       clarify: {
-        question: "Votre message nécessite-t-il des explications détaillées ?",
+        question: "Votre message nécessite-t-il des explications détaillées ?",
         icon: "clarify.png",
         responses: [
-          { text: "Oui, c’est un peu complexe", next: "email-solution" },
-          { text: "Non, c’est simple", next: "face-to-face" },
+          { text: "Oui", next: "email-solution" },
+          { text: "Non", next: "face-to-face" },
         ],
       },
       "face-to-face": {
-        question: "Discuter en face à face ne serait-il pas plus pertinent ?",
+        question: "Échanger directement ne serait-il pas plus pertinent ?",
         icon: "face-to-face.png",
         responses: [
-          { text: "Oui, c’est plus pertinent", next: "end" },
-          { text: "Non, je préfère de l'écrit", next: "instant-message" },
+          { text: "Oui", next: "end" },
+          { text: "Non", next: "instant-message" },
         ],
       },
       end: {
-        question: "Privilégiez un échange en face à face.",
-        icon: "face-to-face.png",
+        question: "Allez à la rencontre ou téléphonez à votre interlocuteur.",
+        icon: "phone.png",
         responses: [],
       },
     };
 
-    // Fonction pour aller à l'étape suivante
     function nextStep(stepName) {
       const step = tree[stepName];
-      const questionBox = document.getElementById("decision-tree");
-      const responseButtons = document.getElementById("response-buttons");
-
-      // Mise à jour de la question
       document.getElementById("question-text").innerHTML = `
         <img src="${step.icon}" alt="Icône">
         ${step.question}
       `;
-
-      // Mise à jour des réponses
+      const responseButtons = document.getElementById("response-buttons");
       responseButtons.innerHTML = "";
       if (step.responses.length > 0) {
         step.responses.forEach((response) => {
@@ -214,7 +204,6 @@
       }
     }
 
-    // Réinitialiser l'arbre de décision
     function reset() {
       location.reload();
     }

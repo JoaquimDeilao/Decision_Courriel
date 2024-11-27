@@ -146,10 +146,10 @@
         Je pense que oui
       </button>
       <button class="response" onclick="nextStep(2)">
-        Explorons d'autres pistes
+        Explorons d'autres options
       </button>
     </div>
-    <div class="navigation-buttons">
+    <div id="nav-buttons" class="navigation-buttons" style="display: none;">
       <button class="nav-button" onclick="goBack()">Retour</button>
     </div>
     <div class="logo-box">
@@ -164,7 +164,7 @@
         icon: "question.png",
         responses: [
           { text: "Je pense que oui", next: 1 },
-          { text: "Explorons d'autres pistes", next: 2 },
+          { text: "Explorons d'autres options", next: 2 },
         ],
       },
       {
@@ -180,7 +180,7 @@
         icon: "urgent(1).png",
         responses: [
           { text: "Oui", next: 3 },
-          { text: "Non", next: 5 },
+          { text: "Non", next: 4 },
         ],
       },
       {
@@ -192,16 +192,21 @@
         question: "Est-ce important de conserver une trace écrite de cet échange ?",
         icon: "archiver.png",
         responses: [
-          { text: "Oui", next: 6 },
-          { text: "Non", next: 7 },
+          { text: "Oui", next: 5 },
+          { text: "Non", next: 6 },
         ],
+      },
+      {
+        question: "L'envoi d’un courriel semble approprié.",
+        icon: "e-mail.png",
+        responses: [],
       },
       {
         question: "Votre message nécessite-t-il des explications détaillées ?",
         icon: "complique.png",
         responses: [
-          { text: "Oui", next: 8 },
-          { text: "Non", next: 9 },
+          { text: "Oui", next: 7 },
+          { text: "Non", next: 8 },
         ],
       },
       {
@@ -213,8 +218,8 @@
         question: "Échange ponctuel ou discussion continue ?",
         icon: "chat.png",
         responses: [
-          { text: "Échange ponctuel", next: 10 },
-          { text: "Discussion continue", next: 11 },
+          { text: "Échange ponctuel", next: 9 },
+          { text: "Discussion continue", next: 10 },
         ],
       },
       {
@@ -238,6 +243,8 @@
         return;
       }
       history.push(index);
+
+      // Mise à jour de la question et des réponses
       document.getElementById("question-text").innerHTML = `
         <img src="${step.icon}" alt="Icône">
         ${step.question}
@@ -245,6 +252,7 @@
 
       const responseButtons = document.getElementById("response-buttons");
       responseButtons.innerHTML = "";
+
       if (step.responses.length > 0) {
         step.responses.forEach((response) => {
           const button = document.createElement("button");
@@ -257,6 +265,10 @@
         responseButtons.innerHTML = `<p class="final-message">${step.question}</p>
         <button class="recommencer-button" onclick="reset()">Recommencer</button>`;
       }
+
+      // Afficher ou cacher le bouton "Retour"
+      const navButtons = document.getElementById("nav-buttons");
+      navButtons.style.display = history.length > 1 ? "flex" : "none";
     }
 
     function goBack() {
@@ -264,8 +276,6 @@
       const previousStep = history[history.length - 1];
       if (previousStep !== undefined) {
         nextStep(previousStep);
-      } else {
-        reset();
       }
     }
 

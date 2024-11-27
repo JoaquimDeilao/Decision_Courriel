@@ -146,7 +146,7 @@
         Je pense que oui
       </button>
       <button class="response" onclick="nextStep(2)">
-        Explorons d'autres options
+        Explorons d'autres pistes
       </button>
     </div>
     <div id="nav-buttons" class="navigation-buttons" style="display: none;">
@@ -158,13 +158,14 @@
   </div>
 
   <script>
+    // Définition des étapes
     const steps = [
       {
         question: "Avez-vous vraiment besoin d'envoyer un mail ?",
         icon: "question.png",
         responses: [
           { text: "Je pense que oui", next: 1 },
-          { text: "Explorons d'autres options", next: 2 },
+          { text: "Explorons d'autres pistes", next: 2 },
         ],
       },
       {
@@ -236,23 +237,39 @@
 
     let history = [];
 
+    // Fonction pour passer à l'étape suivante
     function nextStep(index) {
       const step = steps[index];
-      if (!step) {
-        alert("Erreur : étape introuvable !");
-        return;
-      }
-      history.push(index);
+      history.push(index); // Ajoute l'étape actuelle à l'historique
+      updateView(step);
+    }
 
-      // Mise à jour de la question et des réponses
+    // Fonction pour revenir à l'étape précédente
+    function goBack() {
+      history.pop(); // Supprime la dernière étape
+      const previousStep = history[history.length - 1];
+      if (previousStep !== undefined) {
+        updateView(steps[previousStep]);
+      }
+    }
+
+    // Fonction pour réinitialiser l'arbre
+    function reset() {
+      history = [];
+      nextStep(0);
+    }
+
+    // Fonction pour mettre à jour l'interface utilisateur
+    function updateView(step) {
+      // Mettre à jour la question et l'icône
       document.getElementById("question-text").innerHTML = `
         <img src="${step.icon}" alt="Icône">
         ${step.question}
       `;
 
+      // Mettre à jour les réponses
       const responseButtons = document.getElementById("response-buttons");
       responseButtons.innerHTML = "";
-
       if (step.responses.length > 0) {
         step.responses.forEach((response) => {
           const button = document.createElement("button");
@@ -263,27 +280,15 @@
         });
       } else {
         responseButtons.innerHTML = `<p class="final-message">${step.question}</p>
-        <button class="recommencer-button" onclick="reset()">Recommencer</button>`;
+          <button class="recommencer-button" onclick="reset()">Recommencer</button>`;
       }
 
-      // Afficher ou cacher le bouton "Retour"
+      // Gestion de l'affichage du bouton "Retour"
       const navButtons = document.getElementById("nav-buttons");
       navButtons.style.display = history.length > 1 ? "flex" : "none";
     }
 
-    function goBack() {
-      history.pop();
-      const previousStep = history[history.length - 1];
-      if (previousStep !== undefined) {
-        nextStep(previousStep);
-      }
-    }
-
-    function reset() {
-      history = [];
-      nextStep(0);
-    }
-
+    // Initialisation
     nextStep(0);
   </script>
 </body>

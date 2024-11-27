@@ -107,6 +107,7 @@
   </div>
 
   <script>
+    // Définition de l'arbre de décision
     const tree = {
       response1: {
         question: "Votre courriel nécessite-t-il une réponse rapide ?",
@@ -183,13 +184,19 @@
       },
     };
 
+    // Fonction pour gérer la navigation dans l'arbre
     function nextStep(stepName) {
       const step = tree[stepName];
+      const questionBox = document.getElementById("decision-tree");
+      const responseButtons = document.getElementById("response-buttons");
+
+      // Mise à jour de la question
       document.getElementById("question-text").innerHTML = `
         <img src="${step.icon}" alt="Icône">
         ${step.question}
       `;
-      const responseButtons = document.getElementById("response-buttons");
+
+      // Mise à jour des réponses
       responseButtons.innerHTML = "";
       if (step.responses.length > 0) {
         step.responses.forEach((response) => {
@@ -204,6 +211,7 @@
       }
     }
 
+    // Réinitialiser l'arbre
     function reset() {
       location.reload();
     }

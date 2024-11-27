@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arbre de Décision - Journée sans Mail</title>
+  <title>Arbre de Décision - Étape 1</title>
   <style>
-    /* Body styling */
+    /* Styling général */
     body {
       font-family: Calibri, sans-serif;
       background-color: #ffcd00;
@@ -14,7 +14,6 @@
       text-align: center;
     }
 
-    /* Question and response blocks */
     .question-box {
       background-color: #000000;
       color: #ffffff;
@@ -27,7 +26,6 @@
       text-align: center;
     }
 
-    /* Styling for the question */
     .question {
       font-size: 24px;
       font-weight: bold;
@@ -42,7 +40,6 @@
       margin: 0 auto 10px;
     }
 
-    /* Response buttons */
     .responses {
       display: flex;
       justify-content: space-between;
@@ -60,45 +57,33 @@
       padding: 15px;
       text-align: center;
       cursor: pointer;
-      width: 48%; /* Side-by-side for larger screens */
+      width: 48%;
     }
 
     .response:hover {
       background-color: #e6b800;
     }
 
-    /* Logo styling */
     .logo-box {
       background-color: #ffffff;
-      border-radius: 8px;
-      padding: 10px;
+      border-radius: 12px;
+      padding: 15px;
       margin-top: 20px;
       display: inline-block;
     }
 
     .logo {
-      width: 50px;
+      width: 80px;
       height: auto;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .responses {
-        flex-direction: column;
-      }
-
-      .response {
-        width: 100%; /* Full width for smaller screens */
-      }
     }
   </style>
 </head>
 <body>
-  <!-- Question Block -->
+  <!-- Question Box -->
   <div id="decision-tree" class="question-box">
     <p id="question-text" class="question">
       <img src="question.png" alt="Icône question">
-      As-tu vraiment besoin d’envoyer un email ?
+      As-tu vraiment besoin d’envoyer un email ?
     </p>
     <div id="response-buttons" class="responses">
       <button class="response" onclick="nextStep('response1')">
@@ -114,113 +99,37 @@
   </div>
 
   <script>
-    // Arbre de décision
-    const tree = {
-      response1: {
-        question: "Ton email nécessite-t-il une réponse rapide ?",
-        icon: "urgent.png",
-        responses: [
-          { text: "Oui, réponse rapide souhaitée", next: "immediate-action" },
-          { text: "Non, pas de réponse immédiate attendue", next: "trace" },
-        ],
-      },
-      response2: {
-        question: "Ton message est-il urgent ou peut-il attendre un peu ?",
-        icon: "time.png",
-        responses: [
-          { text: "C'est urgent", next: "immediate-action" },
-          { text: "Ça peut attendre", next: "clarify" },
-        ],
-      },
-      immediate-action: {
-        question: "Utilisez un appel téléphonique ou un message instantané Teams pour une réponse rapide.",
-        icon: "phone.png",
-        responses: [],
-      },
-      trace: {
-        question: "Est-ce important de garder une trace écrite de cet échange ?",
-        icon: "archive.png",
-        responses: [
-          { text: "Oui, besoin de traçabilité", next: "email-solution" },
-          { text: "Non, pas besoin de trace", next: "audience" },
-        ],
-      },
-      email-solution: {
-        question: "Envoyez un email pour garder une trace.",
-        icon: "email.png",
-        responses: [],
-      },
-      audience: {
-        question: "Ce message concerne-t-il plusieurs personnes ou juste une seule ?",
-        icon: "group.png",
-        responses: [
-          { text: "Plusieurs personnes", next: "teams-group" },
-          { text: "Une seule personne", next: "instant-message" },
-        ],
-      },
-      teams-group: {
-        question: "Organisez une visio Teams ou envoyez un message de groupe sur Teams.",
-        icon: "video.png",
-        responses: [],
-      },
-      instant-message: {
-        question: "Un message instantané Teams suffit.",
-        icon: "chat.png",
-        responses: [],
-      },
-      clarify: {
-        question: "Ton message nécessite-t-il des explications détaillées ?",
-        icon: "clarify.png",
-        responses: [
-          { text: "Oui, c'est un peu complexe", next: "email-solution" },
-          { text: "Non, c'est simple", next: "face-to-face" },
-        ],
-      },
-      "face-to-face": {
-        question: "Discuter en face à face ne serait-il pas plus pertinent ?",
-        icon: "face-to-face.png",
-        responses: [
-          { text: "Oui, c'est plus pertinent", next: "end" },
-          { text: "Non, un message écrit suffit", next: "instant-message" },
-        ],
-      },
-      end: {
-        question: "Privilégiez un échange en face à face.",
-        icon: "face-to-face.png",
-        responses: [],
-      },
-    };
-
-    // Fonction pour aller à l'étape suivante
-    function nextStep(stepName) {
-      const step = tree[stepName];
-      const questionBox = document.getElementById("decision-tree");
-      const responseButtons = document.getElementById("response-buttons");
-
-      // Mise à jour de la question
-      document.getElementById("question-text").innerHTML = `
-        <img src="${step.icon}" alt="Icône">
-        ${step.question}
-      `;
-
-      // Mise à jour des réponses
-      responseButtons.innerHTML = "";
-      if (step.responses.length > 0) {
-        step.responses.forEach((response) => {
-          const button = document.createElement("button");
-          button.className = "response";
-          button.innerText = response.text;
-          button.onclick = () => nextStep(response.next);
-          responseButtons.appendChild(button);
-        });
-      } else {
-        responseButtons.innerHTML = `<button class="response" onclick="reset()">Recommencer</button>`;
+    // Fonction pour changer la question
+    function nextStep(step) {
+      if (step === 'response1') {
+        // Met à jour la question suivante
+        document.getElementById("question-text").innerHTML = `
+          <img src="urgent.png" alt="Icône">
+          Ton email nécessite-t-il une réponse rapide ?
+        `;
+        document.getElementById("response-buttons").innerHTML = `
+          <button class="response" onclick="nextStep('response1-yes')">
+            Oui, réponse rapide souhaitée
+          </button>
+          <button class="response" onclick="nextStep('response1-no')">
+            Non, pas de réponse immédiate attendue
+          </button>
+        `;
+      } else if (step === 'response2') {
+        // Met à jour une autre question
+        document.getElementById("question-text").innerHTML = `
+          <img src="time.png" alt="Icône">
+          Ton message est-il urgent ou peut-il attendre un peu ?
+        `;
+        document.getElementById("response-buttons").innerHTML = `
+          <button class="response" onclick="nextStep('urgent')">
+            C’est urgent
+          </button>
+          <button class="response" onclick="nextStep('wait')">
+            Ça peut attendre
+          </button>
+        `;
       }
-    }
-
-    // Réinitialiser l'arbre de décision
-    function reset() {
-      location.reload();
     }
   </script>
 </body>

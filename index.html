@@ -88,6 +88,7 @@
   </style>
 </head>
 <body>
+  <!-- Conteneur principal -->
   <div id="decision-tree" class="question-box">
     <p id="question-text" class="question">
       <img src="question.png" alt="Icône question">
@@ -107,16 +108,8 @@
   </div>
 
   <script>
-    // Définition de l'arbre de décision
+    // Arbre de décision simplifié
     const tree = {
-      start: {
-        question: "Avez-vous vraiment besoin d'envoyer un mail ?",
-        icon: "question.png",
-        responses: [
-          { text: "Je pense que oui", next: "response1" },
-          { text: "Explorons d'autres pistes", next: "response2" },
-        ],
-      },
       response1: {
         question: "Votre courriel nécessite-t-il une réponse rapide ?",
         icon: "urgent.png",
@@ -192,11 +185,11 @@
       },
     };
 
-    // Fonction pour changer la question
+    // Fonction de mise à jour dynamique
     function nextStep(stepName) {
       const step = tree[stepName];
       if (!step) {
-        console.error("Étape introuvable :", stepName);
+        alert("Erreur : étape introuvable !");
         return;
       }
 
@@ -222,7 +215,7 @@
       }
     }
 
-    // Réinitialisation de l'arbre
+    // Fonction de réinitialisation
     function reset() {
       nextStep("start");
     }

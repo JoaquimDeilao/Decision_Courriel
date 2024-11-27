@@ -76,6 +76,13 @@
       height: auto;
     }
 
+    .final-message {
+      font-size: 28px;
+      font-weight: bold;
+      color: #ffffff;
+      margin: 30px 0;
+    }
+
     .navigation-buttons {
       display: flex;
       justify-content: center;
@@ -125,12 +132,12 @@
         Explorons d'autres pistes
       </button>
     </div>
-    <div class="logo-box">
-      <img src="logo.png" class="logo" alt="Logo Conseil Départemental">
-    </div>
     <div class="navigation-buttons">
       <button class="nav-button" onclick="goBack()">Retour</button>
       <button class="nav-button" onclick="reset()">Recommencer</button>
+    </div>
+    <div class="logo-box">
+      <img src="logo.png" class="logo" alt="Logo Conseil Départemental">
     </div>
   </div>
 
@@ -146,7 +153,7 @@
       },
       {
         question: "Votre courriel nécessite-t-il une réponse rapide ?",
-        icon: "urgent(1).png",
+        icon: "urgent.png",
         responses: [
           { text: "Oui", next: 3 },
           { text: "Non", next: 4 },
@@ -161,7 +168,7 @@
         ],
       },
       {
-        question: "Utilisez un appel téléphonique ou un message instantané Teams pour une réponse rapide.",
+        question: "Appelez directement votre interlocuteur.",
         icon: "urgent(1).png",
         responses: [],
       },
@@ -198,12 +205,17 @@
         question: "Échange ponctuel ou discussion continue ?",
         icon: "chat.png",
         responses: [
-          { text: "Échange ponctuel", next: 10 },
-          { text: "Discussion continue", next: 11 },
+          { text: "Échange ponctuel", next: 11 },
+          { text: "Discussion continue", next: 12 },
         ],
       },
       {
-        question: "Adressez un message via Teams ou un SMS.",
+        question: "Une visio-conférence ou un message sur un groupe Teams est suffisant.",
+        icon: "conference-video.png",
+        responses: [],
+      },
+      {
+        question: "Adressez un message instantané via Teams (ou un SMS).",
         icon: "chat.png",
         responses: [],
       },
@@ -212,9 +224,14 @@
         icon: "chat.png",
         responses: [],
       },
+      {
+        question: "Allez à la rencontre ou téléphonez directement à votre interlocuteur.",
+        icon: "urgent(1).png",
+        responses: [],
+      },
     ];
 
-    let history = []; // Garde une trace des étapes précédentes
+    let history = []; // Historique pour revenir en arrière
 
     // Afficher une étape donnée
     function nextStep(index) {
@@ -242,7 +259,7 @@
           responseButtons.appendChild(button);
         });
       } else {
-        responseButtons.innerHTML = `<button class="response" onclick="reset()">Recommencer</button>`;
+        document.getElementById("response-buttons").innerHTML = `<p class="final-message">${step.question}</p>`;
       }
     }
 

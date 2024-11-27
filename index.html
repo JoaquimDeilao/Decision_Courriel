@@ -106,6 +106,24 @@
       color: #ffffff;
     }
 
+    .recommencer-button {
+      background-color: #ffcd00;
+      color: #000000;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 15px 30px;
+      text-align: center;
+      margin: 20px auto;
+      display: block;
+      cursor: pointer;
+    }
+
+    .recommencer-button:hover {
+      background-color: #e6b800;
+    }
+
     @media (max-width: 768px) {
       .responses {
         flex-direction: column;
@@ -237,7 +255,7 @@
         });
       } else {
         responseButtons.innerHTML = `<p class="final-message">${step.question}</p>
-        <button class="nav-button" onclick="reset()">Recommencer</button>`;
+        <button class="recommencer-button" onclick="reset()">Recommencer</button>`;
       }
     }
 

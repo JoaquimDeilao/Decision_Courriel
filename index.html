@@ -76,6 +76,29 @@
       height: auto;
     }
 
+    .navigation-buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    .nav-button {
+      background-color: #ffffff;
+      color: #000000;
+      border: 2px solid #000000;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .nav-button:hover {
+      background-color: #e6b800;
+      color: #ffffff;
+    }
+
     @media (max-width: 768px) {
       .responses {
         flex-direction: column;
@@ -105,10 +128,13 @@
     <div class="logo-box">
       <img src="logo.png" class="logo" alt="Logo Conseil Départemental">
     </div>
+    <div class="navigation-buttons">
+      <button class="nav-button" onclick="goBack()">Retour</button>
+      <button class="nav-button" onclick="reset()">Recommencer</button>
+    </div>
   </div>
 
   <script>
-    // Étapes simples de l'arbre
     const steps = [
       {
         question: "Avez-vous vraiment besoin d'envoyer un mail ?",
@@ -120,7 +146,7 @@
       },
       {
         question: "Votre courriel nécessite-t-il une réponse rapide ?",
-        icon: "urgent.png",
+        icon: "urgent(1).png",
         responses: [
           { text: "Oui", next: 3 },
           { text: "Non", next: 4 },
@@ -128,7 +154,7 @@
       },
       {
         question: "Votre message est-il urgent ?",
-        icon: "time.png",
+        icon: "urgent(1).png",
         responses: [
           { text: "Oui", next: 3 },
           { text: "Non", next: 5 },
@@ -136,12 +162,12 @@
       },
       {
         question: "Utilisez un appel téléphonique ou un message instantané Teams pour une réponse rapide.",
-        icon: "phone.png",
+        icon: "urgent(1).png",
         responses: [],
       },
       {
         question: "Est-ce important de conserver une trace écrite de cet échange ?",
-        icon: "archive.png",
+        icon: "archiver.png",
         responses: [
           { text: "Oui", next: 6 },
           { text: "Non", next: 7 },
@@ -149,7 +175,7 @@
       },
       {
         question: "Votre message nécessite-t-il des explications détaillées ?",
-        icon: "clarify.png",
+        icon: "complique.png",
         responses: [
           { text: "Oui", next: 6 },
           { text: "Non", next: 8 },
@@ -157,43 +183,40 @@
       },
       {
         question: "L'envoi d'un courriel semble approprié.",
-        icon: "email.png",
+        icon: "e-mail.png",
         responses: [],
       },
       {
         question: "Quelle est l'audience de ce message ?",
-        icon: "group.png",
+        icon: "jeunesse.png",
         responses: [
           { text: "Plusieurs personnes", next: 9 },
           { text: "Une seule personne", next: 10 },
         ],
       },
       {
-        question: "Une visio-conférence ou un message sur un groupe Teams est suffisant.",
-        icon: "video.png",
-        responses: [],
+        question: "Échange ponctuel ou discussion continue ?",
+        icon: "chat.png",
+        responses: [
+          { text: "Échange ponctuel", next: 10 },
+          { text: "Discussion continue", next: 11 },
+        ],
       },
       {
-        question: "Un appel ou l'utilisation de la messagerie instantanée Teams semble suffisant.",
+        question: "Adressez un message via Teams ou un SMS.",
         icon: "chat.png",
         responses: [],
       },
       {
-        question: "Échanger directement ne serait-il pas plus pertinent ?",
-        icon: "face-to-face.png",
-        responses: [
-          { text: "Oui", next: 11 },
-          { text: "Non", next: 10 },
-        ],
-      },
-      {
-        question: "Allez à la rencontre ou téléphonez à votre interlocuteur.",
-        icon: "phone.png",
+        question: "Créez un groupe de discussion sur Teams.",
+        icon: "chat.png",
         responses: [],
       },
     ];
 
-    // Affichage d'une étape
+    let history = []; // Garde une trace des étapes précédentes
+
+    // Afficher une étape donnée
     function nextStep(index) {
       const step = steps[index];
       if (!step) {
@@ -201,17 +224,17 @@
         return;
       }
 
-      // Mise à jour de la question
+      history.push(index); // Enregistrer l'étape actuelle
       document.getElementById("question-text").innerHTML = `
         <img src="${step.icon}" alt="Icône">
         ${step.question}
       `;
 
-      // Mise à jour des réponses
       const responseButtons = document.getElementById("response-buttons");
       responseButtons.innerHTML = "";
+
       if (step.responses.length > 0) {
-        step.responses.forEach((response, i) => {
+        step.responses.forEach((response) => {
           const button = document.createElement("button");
           button.className = "response";
           button.innerText = response.text;
@@ -223,12 +246,24 @@
       }
     }
 
-    // Réinitialisation
+    // Fonction pour revenir à l'étape précédente
+    function goBack() {
+      history.pop(); // Retirer la dernière étape
+      const previousStep = history[history.length - 1];
+      if (previousStep !== undefined) {
+        nextStep(previousStep);
+      } else {
+        reset(); // Si aucune étape n'existe, recommencer
+      }
+    }
+
+    // Réinitialiser l'arbre
     function reset() {
+      history = [];
       nextStep(0);
     }
 
-    // Démarrage de l'arbre
+    // Initialisation
     nextStep(0);
   </script>
 </body>

@@ -95,10 +95,10 @@
       Avez-vous vraiment besoin d'envoyer un mail ?
     </p>
     <div id="response-buttons" class="responses">
-      <button class="response" onclick="nextStep('response1')">
+      <button class="response" onclick="nextStep(1)">
         Je pense que oui
       </button>
-      <button class="response" onclick="nextStep('response2')">
+      <button class="response" onclick="nextStep(2)">
         Explorons d'autres pistes
       </button>
     </div>
@@ -108,86 +108,94 @@
   </div>
 
   <script>
-    // Arbre de décision simplifié
-    const tree = {
-      response1: {
+    // Étapes simples de l'arbre
+    const steps = [
+      {
+        question: "Avez-vous vraiment besoin d'envoyer un mail ?",
+        icon: "question.png",
+        responses: [
+          { text: "Je pense que oui", next: 1 },
+          { text: "Explorons d'autres pistes", next: 2 },
+        ],
+      },
+      {
         question: "Votre courriel nécessite-t-il une réponse rapide ?",
         icon: "urgent.png",
         responses: [
-          { text: "Oui", next: "immediate-action" },
-          { text: "Non", next: "trace" },
+          { text: "Oui", next: 3 },
+          { text: "Non", next: 4 },
         ],
       },
-      response2: {
+      {
         question: "Votre message est-il urgent ?",
         icon: "time.png",
         responses: [
-          { text: "Oui", next: "immediate-action" },
-          { text: "Non", next: "clarify" },
+          { text: "Oui", next: 3 },
+          { text: "Non", next: 5 },
         ],
       },
-      immediate-action: {
+      {
         question: "Utilisez un appel téléphonique ou un message instantané Teams pour une réponse rapide.",
         icon: "phone.png",
         responses: [],
       },
-      trace: {
+      {
         question: "Est-ce important de conserver une trace écrite de cet échange ?",
         icon: "archive.png",
         responses: [
-          { text: "Oui", next: "email-solution" },
-          { text: "Non", next: "audience" },
+          { text: "Oui", next: 6 },
+          { text: "Non", next: 7 },
         ],
       },
-      email-solution: {
+      {
+        question: "Votre message nécessite-t-il des explications détaillées ?",
+        icon: "clarify.png",
+        responses: [
+          { text: "Oui", next: 6 },
+          { text: "Non", next: 8 },
+        ],
+      },
+      {
         question: "L'envoi d'un courriel semble approprié.",
         icon: "email.png",
         responses: [],
       },
-      audience: {
+      {
         question: "Quelle est l'audience de ce message ?",
         icon: "group.png",
         responses: [
-          { text: "Plusieurs personnes", next: "teams-group" },
-          { text: "Une seule personne", next: "instant-message" },
+          { text: "Plusieurs personnes", next: 9 },
+          { text: "Une seule personne", next: 10 },
         ],
       },
-      teams-group: {
+      {
         question: "Une visio-conférence ou un message sur un groupe Teams est suffisant.",
         icon: "video.png",
         responses: [],
       },
-      instant-message: {
+      {
         question: "Un appel ou l'utilisation de la messagerie instantanée Teams semble suffisant.",
         icon: "chat.png",
         responses: [],
       },
-      clarify: {
-        question: "Votre message nécessite-t-il des explications détaillées ?",
-        icon: "clarify.png",
-        responses: [
-          { text: "Oui", next: "email-solution" },
-          { text: "Non", next: "face-to-face" },
-        ],
-      },
-      "face-to-face": {
+      {
         question: "Échanger directement ne serait-il pas plus pertinent ?",
         icon: "face-to-face.png",
         responses: [
-          { text: "Oui", next: "end" },
-          { text: "Non", next: "instant-message" },
+          { text: "Oui", next: 11 },
+          { text: "Non", next: 10 },
         ],
       },
-      end: {
+      {
         question: "Allez à la rencontre ou téléphonez à votre interlocuteur.",
         icon: "phone.png",
         responses: [],
       },
-    };
+    ];
 
-    // Fonction de mise à jour dynamique
-    function nextStep(stepName) {
-      const step = tree[stepName];
+    // Affichage d'une étape
+    function nextStep(index) {
+      const step = steps[index];
       if (!step) {
         alert("Erreur : étape introuvable !");
         return;
@@ -202,8 +210,8 @@
       // Mise à jour des réponses
       const responseButtons = document.getElementById("response-buttons");
       responseButtons.innerHTML = "";
-      if (step.responses && step.responses.length > 0) {
-        step.responses.forEach((response) => {
+      if (step.responses.length > 0) {
+        step.responses.forEach((response, i) => {
           const button = document.createElement("button");
           button.className = "response";
           button.innerText = response.text;
@@ -215,13 +223,13 @@
       }
     }
 
-    // Fonction de réinitialisation
+    // Réinitialisation
     function reset() {
-      nextStep("start");
+      nextStep(0);
     }
 
-    // Initialisation
-    nextStep("start");
+    // Démarrage de l'arbre
+    nextStep(0);
   </script>
 </body>
 </html>

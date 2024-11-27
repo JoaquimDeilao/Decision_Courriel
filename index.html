@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Arbre de Décision - Journée sans Mail</title>
   <style>
-    /* Styling for the page */
+    /* Body styling */
     body {
       font-family: Calibri, sans-serif;
       background-color: #ffcd00;
@@ -24,6 +24,7 @@
       width: 90%;
       max-width: 600px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      text-align: center;
     }
 
     /* Styling for the question */
@@ -35,9 +36,10 @@
     }
 
     .question img {
-      width: 30px;
-      height: 30px;
-      margin-bottom: 10px;
+      width: 60px;
+      height: 60px;
+      display: block;
+      margin: 0 auto 10px;
     }
 
     /* Response buttons */
@@ -66,9 +68,15 @@
     }
 
     /* Logo styling */
+    .logo-box {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 20px;
+      display: inline-block;
+    }
+
     .logo {
-      display: block;
-      margin: 20px auto 0;
       width: 50px;
       height: auto;
     }
@@ -100,10 +108,10 @@
         Non, explorons d’autres options
       </button>
     </div>
+    <div class="logo-box">
+      <img src="logo.png" class="logo" alt="Logo Conseil Départemental">
+    </div>
   </div>
-
-  <!-- Logo -->
-  <img src="logo.png" class="logo" alt="Logo Conseil Départemental">
 
   <script>
     // Arbre de décision

@@ -118,7 +118,6 @@
   </style>
 </head>
 <body>
-  <!-- Conteneur principal -->
   <div id="decision-tree" class="question-box">
     <p id="question-text" class="question">
       <img src="question.png" alt="Icône question">
@@ -134,7 +133,6 @@
     </div>
     <div class="navigation-buttons">
       <button class="nav-button" onclick="goBack()">Retour</button>
-      <button class="nav-button" onclick="reset()">Recommencer</button>
     </div>
     <div class="logo-box">
       <img src="logo.png" class="logo" alt="Logo Conseil Départemental">
@@ -184,35 +182,22 @@
         question: "Votre message nécessite-t-il des explications détaillées ?",
         icon: "complique.png",
         responses: [
-          { text: "Oui", next: 6 },
-          { text: "Non", next: 8 },
+          { text: "Oui", next: 8 },
+          { text: "Non", next: 9 },
         ],
       },
       {
-        question: "L'envoi d'un courriel semble approprié.",
-        icon: "e-mail.png",
+        question: "Partagez le document avec un lien OneDrive ou organisez un entretien.",
+        icon: "conference-video.png",
         responses: [],
-      },
-      {
-        question: "Quelle est l'audience de ce message ?",
-        icon: "jeunesse.png",
-        responses: [
-          { text: "Plusieurs personnes", next: 9 },
-          { text: "Une seule personne", next: 10 },
-        ],
       },
       {
         question: "Échange ponctuel ou discussion continue ?",
         icon: "chat.png",
         responses: [
-          { text: "Échange ponctuel", next: 11 },
-          { text: "Discussion continue", next: 12 },
+          { text: "Échange ponctuel", next: 10 },
+          { text: "Discussion continue", next: 11 },
         ],
-      },
-      {
-        question: "Une visio-conférence ou un message sur un groupe Teams est suffisant.",
-        icon: "conference-video.png",
-        responses: [],
       },
       {
         question: "Adressez un message instantané via Teams (ou un SMS).",
@@ -224,24 +209,17 @@
         icon: "chat.png",
         responses: [],
       },
-      {
-        question: "Allez à la rencontre ou téléphonez directement à votre interlocuteur.",
-        icon: "urgent(1).png",
-        responses: [],
-      },
     ];
 
-    let history = []; // Historique pour revenir en arrière
+    let history = [];
 
-    // Afficher une étape donnée
     function nextStep(index) {
       const step = steps[index];
       if (!step) {
         alert("Erreur : étape introuvable !");
         return;
       }
-
-      history.push(index); // Enregistrer l'étape actuelle
+      history.push(index);
       document.getElementById("question-text").innerHTML = `
         <img src="${step.icon}" alt="Icône">
         ${step.question}
@@ -249,7 +227,6 @@
 
       const responseButtons = document.getElementById("response-buttons");
       responseButtons.innerHTML = "";
-
       if (step.responses.length > 0) {
         step.responses.forEach((response) => {
           const button = document.createElement("button");
@@ -259,28 +236,26 @@
           responseButtons.appendChild(button);
         });
       } else {
-        document.getElementById("response-buttons").innerHTML = `<p class="final-message">${step.question}</p>`;
+        responseButtons.innerHTML = `<p class="final-message">${step.question}</p>
+        <button class="nav-button" onclick="reset()">Recommencer</button>`;
       }
     }
 
-    // Fonction pour revenir à l'étape précédente
     function goBack() {
-      history.pop(); // Retirer la dernière étape
+      history.pop();
       const previousStep = history[history.length - 1];
       if (previousStep !== undefined) {
         nextStep(previousStep);
       } else {
-        reset(); // Si aucune étape n'existe, recommencer
+        reset();
       }
     }
 
-    // Réinitialiser l'arbre
     function reset() {
       history = [];
       nextStep(0);
     }
 
-    // Initialisation
     nextStep(0);
   </script>
 </body>

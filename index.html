@@ -180,6 +180,19 @@
         icon: "urgent(1).png",
         isFinal: true,
       },
+      {
+        question: "Est-ce important de conserver une trace écrite de cet échange ?",
+        icon: "archiver.png",
+        responses: [
+          { text: "Oui", next: 5 },
+          { text: "Non", next: 6 },
+        ],
+      },
+      {
+        question: "L'envoi d’un courriel semble approprié.",
+        icon: "e-mail.png",
+        isFinal: true,
+      },
     ];
 
     let history = [];

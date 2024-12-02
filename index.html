@@ -158,7 +158,6 @@
   </div>
 
   <script>
-    // Définition des étapes
     const steps = [
       {
         question: "Avez-vous vraiment besoin d'envoyer un mail ?",
@@ -177,118 +176,68 @@
         ],
       },
       {
-        question: "Votre message est-il urgent ?",
-        icon: "urgent(1).png",
-        responses: [
-          { text: "Oui", next: 3 },
-          { text: "Non", next: 4 },
-        ],
-      },
-      {
         question: "Appelez directement votre interlocuteur.",
         icon: "urgent(1).png",
-        responses: [],
-      },
-      {
-        question: "Est-ce important de conserver une trace écrite de cet échange ?",
-        icon: "archiver.png",
-        responses: [
-          { text: "Oui", next: 5 },
-          { text: "Non", next: 6 },
-        ],
-      },
-      {
-        question: "L'envoi d’un courriel semble approprié.",
-        icon: "e-mail.png",
-        responses: [],
-      },
-      {
-        question: "Votre message nécessite-t-il des explications détaillées ?",
-        icon: "complique.png",
-        responses: [
-          { text: "Oui", next: 7 },
-          { text: "Non", next: 8 },
-        ],
-      },
-      {
-        question: "Partagez le document avec un lien OneDrive ou organisez un entretien.",
-        icon: "conference-video.png",
-        responses: [],
-      },
-      {
-        question: "Échange ponctuel ou discussion continue ?",
-        icon: "chat.png",
-        responses: [
-          { text: "Échange ponctuel", next: 9 },
-          { text: "Discussion continue", next: 10 },
-        ],
-      },
-      {
-        question: "Adressez un message instantané via Teams (ou un SMS).",
-        icon: "chat.png",
-        responses: [],
-      },
-      {
-        question: "Créez un groupe de discussion sur Teams.",
-        icon: "chat.png",
-        responses: [],
+        isFinal: true,
       },
     ];
 
     let history = [];
 
-    // Fonction pour passer à l'étape suivante
     function nextStep(index) {
       const step = steps[index];
-      history.push(index); // Ajoute l'étape actuelle à l'historique
-      updateView(step);
-    }
+      history.push(index);
 
-    // Fonction pour revenir à l'étape précédente
-    function goBack() {
-      history.pop(); // Supprime la dernière étape
-      const previousStep = history[history.length - 1];
-      if (previousStep !== undefined) {
-        updateView(steps[previousStep]);
+      if (step.isFinal) {
+        showFinal(step);
+      } else {
+        updateQuestion(step);
       }
+
+      updateNavButtons();
     }
 
-    // Fonction pour réinitialiser l'arbre
+    function goBack() {
+      history.pop();
+      const previousIndex = history[history.length - 1];
+      updateQuestion(steps[previousIndex]);
+      updateNavButtons();
+    }
+
     function reset() {
       history = [];
       nextStep(0);
     }
 
-    // Fonction pour mettre à jour l'interface utilisateur
-    function updateView(step) {
-      // Mettre à jour la question et l'icône
+    function updateQuestion(step) {
       document.getElementById("question-text").innerHTML = `
         <img src="${step.icon}" alt="Icône">
         ${step.question}
       `;
 
-      // Mettre à jour les réponses
       const responseButtons = document.getElementById("response-buttons");
-      responseButtons.innerHTML = "";
-      if (step.responses.length > 0) {
-        step.responses.forEach((response) => {
-          const button = document.createElement("button");
-          button.className = "response";
-          button.innerText = response.text;
-          button.onclick = () => nextStep(response.next);
-          responseButtons.appendChild(button);
-        });
-      } else {
-        responseButtons.innerHTML = `<p class="final-message">${step.question}</p>
-          <button class="recommencer-button" onclick="reset()">Recommencer</button>`;
-      }
+      responseButtons.innerHTML = step.responses
+        .map(
+          (response) =>
+            `<button class="response" onclick="nextStep(${response.next})">${response.text}</button>`
+        )
+        .join("");
+    }
 
-      // Gestion de l'affichage du bouton "Retour"
+    function showFinal(step) {
+      document.getElementById("question-text").innerHTML = "";
+      const responseButtons = document.getElementById("response-buttons");
+      responseButtons.innerHTML = `
+        <p class="final-message">${step.question}</p>
+        <button class="recommencer-button" onclick="reset()">Recommencer</button>
+      `;
+    }
+
+    function updateNavButtons() {
       const navButtons = document.getElementById("nav-buttons");
       navButtons.style.display = history.length > 1 ? "flex" : "none";
     }
 
-    // Initialisation
     nextStep(0);
   </script>
 </body>

@@ -164,14 +164,14 @@
         icon: "question.png",
         responses: [
           { text: "Je pense que oui", next: 1 },
-          { text: "Explorons d'autres pistes", next: 2 },
+          { text: "Explorons d'autres pistes", next: 3 },
         ],
       },
       {
         question: "Votre courriel nécessite-t-il une réponse rapide ?",
         icon: "urgent.png",
         responses: [
-          { text: "Oui", next: 3 },
+          { text: "Oui", next: 2 },
           { text: "Non", next: 4 },
         ],
       },
@@ -181,16 +181,42 @@
         isFinal: true,
       },
       {
+        question: "Votre message est-il urgent ?",
+        icon: "urgent.png",
+        responses: [
+          { text: "Oui", next: 2 },
+          { text: "Non", next: 5 },
+        ],
+      },
+      {
         question: "Est-ce important de conserver une trace écrite de cet échange ?",
         icon: "archiver.png",
         responses: [
-          { text: "Oui", next: 5 },
-          { text: "Non", next: 6 },
+          { text: "Oui", next: 6 },
+          { text: "Non", next: 7 },
         ],
+      },
+      {
+        question: "Adressez un message instantané via Teams.",
+        icon: "chat.png",
+        isFinal: true,
       },
       {
         question: "L'envoi d’un courriel semble approprié.",
         icon: "e-mail.png",
+        isFinal: true,
+      },
+      {
+        question: "Échange ponctuel ou discussion continue ?",
+        icon: "chat.png",
+        responses: [
+          { text: "Échange ponctuel", next: 5 },
+          { text: "Discussion continue", next: 8 },
+        ],
+      },
+      {
+        question: "Créez un groupe de discussion sur Teams.",
+        icon: "chat.png",
         isFinal: true,
       },
     ];
